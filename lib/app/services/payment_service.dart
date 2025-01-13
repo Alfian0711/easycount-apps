@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 
 class MidtransService {
-  final String serverKey = 'SERVER KEY';
+  final String serverKey = 'SERVER';
   final String baseUrl =
       'https://app.sandbox.midtrans.com/snap/v1/transactions';
 
