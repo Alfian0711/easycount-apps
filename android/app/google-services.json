@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "7064066014",
+    "firebase_url": "https://easycount-dd663-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "easycount-dd663",
+    "storage_bucket": "easycount-dd663.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7064066014:android:5ac8c5197057e44b5eaf4f",
+        "android_client_info": {
+          "package_name": "com.example.easycount"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "7064066014-aov5inemddgcd4dd17v4sp6jd09mnlm9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpCl8x0BelslMj23D39GpmUPgmafk8B-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "7064066014-aov5inemddgcd4dd17v4sp6jd09mnlm9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
