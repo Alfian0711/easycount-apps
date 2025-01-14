@@ -45,6 +45,11 @@ class _Premium_ViewState extends State<Premium_View> {
     });
   }
   Widget build(BuildContext context) {
+
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+    final Color colorfont = isDarkMode ? Colors.white : Colors.black;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -72,7 +77,7 @@ class _Premium_ViewState extends State<Premium_View> {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: colorfont,
               ),
             ),
             SizedBox(height: 10),
@@ -80,7 +85,7 @@ class _Premium_ViewState extends State<Premium_View> {
               "Akses semua fitur akuntansi. Coba selama 3 bulan hanya Rp. 40.000.",
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.white70,
+                color: colorfont,
               ),
             ),
             SizedBox(height: 10),

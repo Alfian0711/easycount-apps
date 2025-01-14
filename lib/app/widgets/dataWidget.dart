@@ -12,24 +12,30 @@ class DataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Mendapatkan tema dari context
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
+    // Warna teks berdasarkan tema
+    final Color colorfont = isDarkMode ? Colors.white : Colors.black;
+
     return StreamBuilder<QuerySnapshot<Object?>>(
       stream: TransaksiC().Tampildata(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(child: Text('Something went wrong'));
+          return const Center(child: Text('Something went wrong'));
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return const Datakosong();
         }
 
-        // Mengubah QuerySnapshot menjadi daftar Map<String, dynamic>
         final transaksiDocs = snapshot.data!.docs;
         final transaksiList = transaksiDocs.map((doc) {
           final data = doc.data() as Map<String, dynamic>;
-          data['id'] = doc.id; 
+          data['id'] = doc.id; // Menambahkan ID dokumen ke dalam data
           return data;
         }).toList();
 
@@ -38,13 +44,14 @@ class DataWidget extends StatelessWidget {
           children: transaksiList
               .where((data) {
                 final String catatan = (data['catatan'] ?? '').toLowerCase();
-                final String jenisTransaksi = (data['jenisTransaksi'] ?? '').toLowerCase();
+                final String jenisTransaksi =
+                    (data['jenisTransaksi'] ?? '').toLowerCase();
                 return catatan.contains(searchQuery.toLowerCase()) ||
                     jenisTransaksi.contains(searchQuery.toLowerCase());
               })
               .map((data) {
                 final String jenisTransaksi = data['jenisTransaksi'] ?? 'Unknown';
-                Color borderColor =
+                final Color borderColor =
                     jenisTransaksi == 'Pengeluaran' ? Colors.red : Colors.blue;
 
                 return Padding(
@@ -54,14 +61,12 @@ class DataWidget extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              DetailTransaksi(data: data),
+                          builder: (context) => DetailTransaksi(data: data),
                         ),
                       );
                     },
                     style: OutlinedButton.styleFrom(
-                      backgroundColor: Theme.of(context).brightness ==
-                              Brightness.dark
+                      backgroundColor: isDarkMode
                           ? const Color.fromRGBO(68, 68, 68, 1)
                           : Colors.grey[200],
                       padding: const EdgeInsets.all(15),
@@ -82,8 +87,7 @@ class DataWidget extends StatelessWidget {
                             Text(
                               data['catatan'] ?? 'No description',
                               style: TextStyle(
-                                color: Theme.of(context).brightness ==
-                                        Brightness.dark
+                                color: isDarkMode
                                     ? Colors.grey[200]
                                     : const Color.fromRGBO(68, 68, 68, 1),
                                 fontSize: 18,
@@ -105,16 +109,15 @@ class DataWidget extends StatelessWidget {
                           children: [
                             Text(
                               'Rp. ${data['nominal'].toString()}',
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: colorfont,
                                 fontSize: 16,
                               ),
                             ),
                             Text(
                               jenisTransaksi,
                               style: TextStyle(
-                                color: Theme.of(context).brightness ==
-                                        Brightness.dark
+                                color: isDarkMode
                                     ? Colors.grey[200]
                                     : const Color.fromRGBO(68, 68, 68, 1),
                                 fontSize: 14,
@@ -157,7 +160,9 @@ class Datakosong extends StatelessWidget {
         'Data Kosong',
         style: GoogleFonts.poppins(
           fontSize: 20,
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
           fontWeight: FontWeight.bold,
         ),
       ),

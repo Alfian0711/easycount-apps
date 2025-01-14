@@ -16,7 +16,7 @@ class LaporanKeuangan extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Perubahan Modal',
+          'Perubahan Keuangan',
           style: GoogleFonts.poppins(
             textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),

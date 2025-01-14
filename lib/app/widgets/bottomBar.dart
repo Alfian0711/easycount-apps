@@ -16,7 +16,7 @@ class Bottombar extends StatefulWidget {
 
 class _BottombarState extends State<Bottombar> {
   late int _selectedIndex;
-  final ocean = Color.fromRGBO(89, 119, 181, 1);
+  final Color ocean = Color.fromRGBO(89, 119, 181, 1);
 
   // List of pages
   final List<Widget> _pages = [
@@ -30,7 +30,7 @@ class _BottombarState extends State<Bottombar> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.initialIndex;  // Initialize with the selected index
+    _selectedIndex = widget.initialIndex; // Initialize with the selected index
   }
 
   void _onItemTapped(int index) {
@@ -41,36 +41,42 @@ class _BottombarState extends State<Bottombar> {
 
   @override
   Widget build(BuildContext context) {
+    // Determine the appropriate icon color based on the current theme
+    Color iconColor = Theme.of(context).brightness == Brightness.dark
+        ? Colors.white
+        : Colors.black;
+
     return Scaffold(
       body: IndexedStack(
         index: _selectedIndex,
-        children: _pages,  // Switch between pages based on the selected index
+        children: _pages, // Switch between pages based on the selected index
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled, color: Colors.white),
+            icon: Icon(Icons.home_filled, color: iconColor),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.data_usage, color: Colors.white),
-            label: 'Data',
+            icon: Icon(Icons.data_usage, color: iconColor),
+            label: 'Premium',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle, color: Colors.white),
-            label: 'Tambah',
+            icon: Icon(Icons.add_circle, color: iconColor),
+            label: 'Add',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.insert_chart, color: Colors.white),
-            label: 'Laporan',
+            icon: Icon(Icons.insert_chart, color: iconColor),
+            label: 'Reports',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings, color: Colors.white),
-            label: 'Pengaturan',
+            icon: Icon(Icons.settings, color: iconColor),
+            label: 'Settings',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: ocean,
+        selectedItemColor: ocean, // Selected item color
+        unselectedItemColor: iconColor, // Unselected item color with transparency
         onTap: _onItemTapped,
       ),
     );

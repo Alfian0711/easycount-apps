@@ -57,70 +57,62 @@ Future<void> Signup({
 }  
 
  Future<void> Signin({
-  required String email, 
+  required String email,
   required String password,
-  required BuildContext context}) async {  
-  try {  
-    // Sign in user with email and password  
-    UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(  
-      email: email,  
-      password: password,  
-    );  
+  required BuildContext context,
+}) async {
+  try {
+    // Sign in user with email and password
+    UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
 
-    credential.user!.uid;  
+    final user = credential.user;
 
-    final user = FirebaseAuth.instance.currentUser;  
-    DocumentSnapshot userData = await FirebaseFirestore.instance.collection('pengguna').doc(user?.uid).get();  
+    if (user != null) {
+      DocumentSnapshot userData = await FirebaseFirestore.instance.collection('pengguna').doc(user.uid).get();
 
-    // kondisi apaakah pengguna sudah mengisikan data atau belum
-    if (userData.exists) {  
-      Map<String, dynamic>? userDataMap = userData.data() as Map<String, dynamic>?;  
-      if (userDataMap != null) {  
-        // Memastikan field nama_usaha ada dan tidak null  
-        var namaUsaha = userDataMap['nama_usaha'];  
-        
-        if (namaUsaha != null && namaUsaha.isNotEmpty) {  
-          // Pengguna sudah mengisi identitas, arahkan ke halaman home  
-          Navigator.pushReplacement(  
-            context,  
-            MaterialPageRoute(builder: (context) => Bottombar(initialIndex: 0,)),  
-          );  
-        } else {  
-          // Pengguna belum mengisi identitas, arahkan ke halaman identitas  
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Identity()));  
-        }  
-      } 
-      else {  
-        showErrorDialog(context, 'Gagal Login', 'Tidak dapat mengambil data pengguna.');  
-      }  
-    } 
-    else {  
-      // Pengguna tidak ditemukan di Firestore  
-      showErrorDialog(context, 'Gagal Login','Pengguna tidak ditemukan. Silakan daftar terlebih dahulu.');  
+      if (userData.exists) {
+        Map<String, dynamic>? userDataMap = userData.data() as Map<String, dynamic>?;
+
+        if (userDataMap != null && userDataMap['nama_usaha'] != null && userDataMap['nama_usaha'].isNotEmpty) {
+          // Arahkan ke halaman home
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => Bottombar(initialIndex: 0)),
+          );
+        } else {
+          // Arahkan ke halaman identitas
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Identity()));
+        }
+      } else {
+        showErrorDialog(context, 'Gagal Login', 'Data pengguna tidak ditemukan.');
+      }
+    }
+  } on FirebaseAuthException catch (e) {
+    // Tangani error login
+    String errorMessage;
+
+    if (e.code == 'user-not-found') {
+      errorMessage = 'No user found for that email.';
+    } else if (e.code == 'wrong-password') {
+      errorMessage = 'Wrong password provided for that user.';
+    } else if (e.code == 'invalid-email') {
+      errorMessage = 'Email salah.';
+    } else if (e.code == 'invalid-credential') {
+      errorMessage = 'Email atau password salah.';
+    } else {
+      errorMessage = 'Masukkan email dan password.';
     }
 
-  } on FirebaseAuthException catch (e) {  
-    // error message  
-    String errorMessage;  
-
-    if (e.code == 'user-not-found') {  
-      errorMessage = 'No user found for that email.';  
-    } else if (e.code == 'wrong-password') {  
-      errorMessage = 'Wrong password provided for that user.';  
-    } else if(e.code =='invalid-email'){  
-      errorMessage = 'Email salah';  
-    } else if(e.code =='invalid-credential'){  
-      errorMessage = 'email atau password salah:';  
-    } else{  
-      errorMessage = 'Masukkan email dan passwod';  
-    }
-
-    showErrorDialog(context, 'Gagal Login' ,errorMessage);  
-  } catch (e) {  
-    showErrorDialog(context, 'Gagal Login','An unexpected error occurred. Please try again.');  
-    print(e);  
-  }  
+    showErrorDialog(context, 'Gagal Login', errorMessage);
+  } catch (e) {
+    showErrorDialog(context, 'Gagal Login', 'Terjadi kesalahan. Silakan coba lagi.');
+    print(e);
+  }
 }
+
 
   void showErrorDialog(BuildContext context, String headmessage,String submessage) {
     showDialog(

@@ -16,6 +16,11 @@ class Setting extends StatelessWidget {
     final ocean = Color.fromRGBO(89, 119, 181, 1);  
     final profileController = ProfileC();  
 
+     final themee = Theme.of(context);
+    final isDarkMode = themee.brightness == Brightness.dark;
+    final Color color = isDarkMode ? Color.fromRGBO(42, 42, 42, 1) : Colors.grey;
+
+
     return Scaffold(  
       appBar: AppBar(  
         title: Text('Setting', style: GoogleFonts.poppins(
@@ -82,7 +87,7 @@ class Setting extends StatelessWidget {
                                   padding: EdgeInsets.all(20),
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
-                                    color: Color.fromRGBO(42, 42, 42, 1)
+                                    color: color
                                   ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,7 +102,7 @@ class Setting extends StatelessWidget {
                                   padding: EdgeInsets.all(20),
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
-                                    color: Color.fromRGBO(42, 42, 42, 1)
+                                    color: color
                                   ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,7 +117,7 @@ class Setting extends StatelessWidget {
                                   padding: EdgeInsets.all(20),
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
-                                    color: Color.fromRGBO(42, 42, 42, 1)
+                                    color: color
                                   ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +132,7 @@ class Setting extends StatelessWidget {
                                   padding: EdgeInsets.all(20),
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
-                                    color: Color.fromRGBO(42, 42, 42, 1)
+                                    color: color
                                   ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
